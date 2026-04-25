@@ -1,0 +1,164 @@
+.add-btn{
+    margin-top : 10px;
+    width:80px;
+    padding:10px;
+    border-radius:10px;
+    color:white;
+    background-color:#0D3B66;
+}
+.notes-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+  .notes-list{
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      transition: 0.4s ease-out;
+      box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);
+      position: relative;
+  }
+  .notes-list:hover {
+    transform: translateY(-3px);
+    transition: 0.2s;
+  }
+  .delete-btn{
+    margin-top : 10px;
+    width:80px;
+    padding:10px;
+    border-radius:10px;
+    color:white;
+    background-color:red;
+  }
+  .edit-btn{
+    margin-top : 10px;
+    width:80px;
+    padding:10px;
+    border-radius:10px;
+    color:white;
+    background-color:#0D3B66;
+  }
+  .update-btn{
+    margin-top : 10px;
+    width:80px;
+    padding:10px;
+    border-radius:10px;
+    color:white;
+    background-color:#0D3B66;
+  }
+  .cancel-btn{
+        margin-top : 10px;
+        width:80px;
+        padding:10px;
+        border-radius:10px;
+        color:white;
+        background-color:#0D3B66;
+  }
+  .search-input{
+    margin-bottom : 10px;
+    padding:10px;
+    border-radius:30px;
+    width:40%; 
+  }
+  .tag {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin: 3px;
+    cursor: pointer;
+  }
+  .app-name{
+    color :white;
+  }
+  .header {
+    display: flex;
+    align-items: center;        /* vertical alignment */
+    justify-content: space-between; /* push title left, search right */
+    /* padding: 5px;
+    padding-left:50px;
+    padding-right:50px; */
+    padding: 15px 30px;
+    background-color: #0D3B66;  /* similar to your UI */
+  }
+  .input-form {
+    background: white;            /* makes it stand out */
+    padding: 40px;               /* space inside */
+    border-radius: 12px;         /* rounded edges */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* shadow */
+    max-width: 600px;
+    margin: 30px auto;          /* center horizontally */
+  }
+  .title-input{
+    width:90%;
+    padding:10px;
+    font-size:larger;
+    border-radius:10px;
+    margin-bottom:7px;
+}
+  .note-input{
+    width:90%;
+    height:250px;
+    border-radius:10px;
+    font-size:30px;
+}
+.pinned{
+  border: 2px solid gold;
+  background-color: #fffbe6;
+}
+.pin-btn{
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top:8px;
+}
+.pin-btn:hover {
+  background: #f0f0f0;
+}
+.tag-input {
+  width: 70%;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius:10px;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.button-grp{
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.clear-tag-filter{
+  margin-top : 10px;
+  width:100px;
+  padding:10px;
+  margin-left:10px;
+  margin-right:5px;
+  border-radius:10px;
+  color:white;
+  background-color:grey;
+}
+.clear-btn{
+  margin-top : 10px;
+  width:80px;
+  padding:10px;
+  color:white;
+  border-radius:10px;
+  background-color:grey;
+  margin-left:10px;
+}
+.remove-tag {
+  margin-left: 5px;
+  border: none;
+  background-blend-mode: color;
+  cursor: pointer;
+}
