@@ -162,3 +162,14 @@
   background-blend-mode: color;
   cursor: pointer;
 }
+.status {
+  text-align: center;
+  color: #555;
+  margin: 10px;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  margin: 10px;
+}

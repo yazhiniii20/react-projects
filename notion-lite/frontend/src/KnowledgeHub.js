@@ -4,13 +4,26 @@ import NoteList from './NoteList.js';
 import './Notes.css'
 function KnowledgeHub(){
  const [notes, setNotes] = useState([]);
+ const [loading,setLoading] = useState(false);
+ const [error , setError] = useState("");
  useEffect(() => {
+    setLoading(true);
+    setError("");
     fetch("http://localhost:5000/notes")
-      .then(res => res.json())
+      .then(res =>{
+        if (!res.ok) throw new Error("Failed to fetch notes");
+        return res.json();
+      })
       .then(data => {
         setNotes(Array.isArray(data) ? data : []);
       })
-      .catch(() => setNotes([]));
+      .catch(err =>{
+        setError(err.message);
+        setNotes([]);
+      })
+      .finally(()=>{
+        setLoading(false);
+      })
   }, []);
  const [input,setInput] = useState("");
  const [title,setTitle] = useState("");
@@ -19,6 +32,7 @@ function KnowledgeHub(){
  const [tagInput,setTagInput] = useState("");
  const [tags,setTags] = useState([]);
  const[selectedTag,setSelectedTag] = useState("");
+ 
  function addNote(){
     if(input.trim() === ""){
         return;
@@ -39,8 +53,15 @@ function KnowledgeHub(){
         },
         body : JSON.stringify(newNote)
     })
-    .then(res => res.json())
-    .then(data => setNotes(prev => [...prev, data]));
+    .then(res => {
+        if(!res.ok){
+            throw new Error("Failed to add note");
+        }
+        return res.json();
+    })
+    .then(data => setNotes(prev => [...prev, data]))
+    .catch(err => setError(err.message))
+    .finally(()=> setLoading(false));
     setTitle("");
     setInput("");
     setTags([]);
@@ -48,9 +69,12 @@ function KnowledgeHub(){
 function deleteNote(id){
     fetch(`http://localhost:5000/notes/${id}`,{
         method : "DELETE"
-    }).then(() => {
+    }).then(res => {
+        if(!res.ok) throw new Error("Failed to delete note");
         setNotes(prev => prev.filter(n => n.id !== id));
-    });
+    })
+    .catch(err => setError(err.message))
+    .finally(() => setLoading(false));
 }
 function startEdit(note){
     setEditId(note.id);
@@ -71,13 +95,16 @@ function updateNote(){
             "content-type" : "application/json"
         },
         body : JSON.stringify(updated)
-    }).then(()=> {
+    }).then(res => {
+        if(!res.ok) throw new Error("Failed to update notes");
         setNotes(prev =>
             prev.map(n =>
               n.id === editId ? { ...n, ...updated } : n
             )
           );
-    });
+    })
+    .catch(err => setError(err.message))
+    .finally(()=> setLoading(false));
     setEditId(null);
     setTitle("");
     setInput("");
@@ -129,11 +156,15 @@ return(
     <h1 className="app-name"> Personal Knowledge Hub </h1>
     <input type="text" value = {search} className = "search-input" placeholder = "Search Notes..." onChange = {(e) => setSearch(e.target.value)}/>
     </div>
+    {error && <p className="error">{error}</p>}
+    {loading ?(<p className="status">Loading...</p>):(
+    <>
     <NoteForm addNote = {addNote} input = {input} setInput = {setInput} title = {title} setTitle = {setTitle}
     editId = {editId} updateNote = {updateNote} cancelNote = {cancelNote} tagInput={tagInput} setTagInput = {setTagInput} tags={tags} setTags={setTags}
     selectedTag = {selectedTag} setSelectedTag={setSelectedTag} clearInput={clearInput} removeTag={removeTag}/>
     <NoteList notes = {sortedNotes} deleteNote = {deleteNote} startEdit = {startEdit} setSelectedTag = {setSelectedTag}
     togglePinnedNotes = {togglePinnedNotes}/>
+    </>)}
     </div>
 );
 }
