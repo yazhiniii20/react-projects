@@ -15,14 +15,14 @@ return(
                     </span>
                 ))}
             </div>
-              <button className="pin-btn" onClick = {() => togglePinnedNotes(note.id)}>{note.pinned ? "Unpin📌" : "Pin📌"}</button>
+              <button className="pin-btn" onClick = {() => togglePinnedNotes(note._id)}>{note.pinned ? "Unpin📌" : "Pin📌"}</button>
               </div>
             <h3> {note.heading} </h3>
             <p>  {note.contents} </p>
             <p>  Last Changes on : {note.createdAt} </p>
             </div>
             <div className="button-grp">
-            <button className = "delete-btn" onClick={() => deleteNote(note.id)}>Delete</button>
+            <button className = "delete-btn" onClick={() => deleteNote(note._id)}>Delete</button>
             <button className = "edit-btn" onClick={() => startEdit(note)}>Edit</button>
             </div>
         </div>

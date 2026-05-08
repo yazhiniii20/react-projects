@@ -38,7 +38,6 @@ function KnowledgeHub(){
         return;
     }
     const newNote = {
-        id : Date.now(),
         heading : title,
         contents : input,
         tags : tags,
@@ -71,13 +70,13 @@ function deleteNote(id){
         method : "DELETE"
     }).then(res => {
         if(!res.ok) throw new Error("Failed to delete note");
-        setNotes(prev => prev.filter(n => n.id !== id));
+        setNotes(prev => prev.filter(n => n._id !== id));
     })
     .catch(err => setError(err.message))
     .finally(() => setLoading(false));
 }
 function startEdit(note){
-    setEditId(note.id);
+    setEditId(note._id);
     setTitle(note.heading);
     setInput(note.contents);
     setTags(note.tags || []);
@@ -99,7 +98,7 @@ function updateNote(){
         if(!res.ok) throw new Error("Failed to update notes");
         setNotes(prev =>
             prev.map(n =>
-              n.id === editId ? { ...n, ...updated } : n
+              n._id === editId ? { ...n, ...updated } : n
             )
           );
     })
@@ -128,18 +127,34 @@ const sortedNotes = [...filteredNotes].sort((a, b) => {
       }
       return new Date(b.createdAt) - new Date(a.createdAt);
   });
- function togglePinnedNotes(id){
- const pinnedNote = notes.map(n => {
-    if(n.id === id){
-        return{
-        ...n,
-        pinned : !n.pinned
-        };
-    }
-    return n;
-  });
- setNotes(pinnedNote);
- }
+  function togglePinnedNotes(id) {
+    const targetNote = notes.find(n => n._id === id);
+      if (!targetNote) return;  
+    const updatedPinned = !targetNote.pinned;  
+    fetch(`http://localhost:5000/notes/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        pinned: updatedPinned
+      })
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to update pin");
+        }
+  
+        setNotes(prev =>
+          prev.map(n =>
+            n._id === id
+              ? { ...n, pinned: updatedPinned }
+              : n
+          )
+        );
+      })
+      .catch(err => setError(err.message));
+  }
  function clearInput(){
     setTitle("");
     setInput("");
