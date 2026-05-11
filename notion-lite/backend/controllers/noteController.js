@@ -1,4 +1,4 @@
-const Note = require("../models/Note");
+const Note = require("../models/Note");//This note model talks to mongodb
 
 // GET
 const getNotes = async (req, res) => {

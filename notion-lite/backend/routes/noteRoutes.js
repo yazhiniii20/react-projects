@@ -1,7 +1,8 @@
 const express = require("express");
-
 const router = express.Router();
-
+const authMiddleware = require("../middleware/authMiddleware");
+//import controllers
+//routes only decide url,http method --  the logic is handled by controllers
 const {
     getNotes,
     addNote,
@@ -9,12 +10,12 @@ const {
     updateNote
 } = require("../controllers/noteController");
 
-router.get("/", getNotes);
+router.get("/", authMiddleware,getNotes);
 
-router.post("/", addNote);
+router.post("/", authMiddleware,addNote);
 
-router.delete("/:id", deleteNote);
+router.delete("/:id",authMiddleware, deleteNote);
 
-router.put("/:id", updateNote);
+router.put("/:id", authMiddleware, updateNote);
 
 module.exports = router;
