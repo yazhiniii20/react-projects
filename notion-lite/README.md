@@ -1,107 +1,150 @@
-# Notion Lite
+# 🧠 Notion Lite
 
-A full-stack Notion-inspired notes application built with React, Express and MongoDB, focused on note organization, tag management and real-time UI interactions.
+A full-stack Notion-inspired knowledge management application built with React, Express and MongoDB.
+
+The project focuses on scalable frontend architecture, secure backend development, authentication workflows and real-time note organization with persistent cloud storage.
 
 ---
 
-## ✨ Features
+# 🚀 Features
 
-### 📝 Notes Management
+## 📝 Notes Management
 - Create, edit and delete notes
-- Persistent note storage with MongoDB
+- Persistent cloud storage using MongoDB Atlas
 - Real-time UI updates after CRUD operations
 - Pin and unpin important notes
-
-### 🏷️ Tag System
-- Add and remove tags dynamically
-- Tag preview while typing
-- Prevent duplicate tags
-- Filter notes by tags
-
-### 🔍 Search & Filtering
-- Search notes by title and content
-- Tag-based note filtering
-- Pinned notes sorting
-
-### ⚡ User Experience
-- Loading indicators for API operations
-- Error handling for failed requests
-- Responsive and component-based UI
-- Clean state synchronization between frontend and backend
+- Protected note operations using JWT authentication
 
 ---
 
-## 🛠️ Frontend Technologies
+## 🏷️ Tag System
+- Dynamic tag creation and removal
+- Tag preview while typing
+- Duplicate tag prevention
+- Filter notes using tags
+- Interactive tag-based navigation
 
+---
+
+## 🔍 Search & Filtering
+- Search notes by title and content
+- Instant filtering with dynamic rendering
+- Pinned notes prioritization
+- Organized note grouping
+
+---
+
+## 🔐 Authentication & Security
+- User registration and login
+- Password hashing with bcrypt
+- JWT-based authentication
+- Protected API routes
+- Authorization middleware
+- Secure token verification flow
+
+---
+
+## ⚡ User Experience
+- Responsive component-based UI
+- Loading indicators for async operations
+- Error handling for failed API requests
+- Smooth frontend-backend synchronization
+- Real-time state updates
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
 - React
+- JavaScript (ES6+)
 - useState
 - useEffect
 - Fetch API
-- Component-based architecture
-- Custom CSS
+- CSS3
 
 ---
 
-## 🛠️ Backend Technologies
-
+## Backend
 - Node.js
 - Express.js
 - MongoDB Atlas
 - Mongoose
+- JWT Authentication
+- bcrypt
 - dotenv
 - CORS
 
 ---
 
-## 🧠 Backend Architecture
+# 🧠 Backend Architecture
 
-The backend follows a modular and scalable structure:
+The backend follows a modular and scalable architecture:
 
-- **Routes** → API endpoint definitions
-- **Controllers** → Business logic handling
-- **Models** → MongoDB schema definitions
+```text
+routes/       → API endpoint definitions
+controllers/  → Business logic
+models/       → MongoDB schemas
+middleware/   → Authentication & route protection
+```
 
 ---
 
-## 🗄️ Database Features
+# 🔌 REST API Endpoints
 
-- MongoDB Atlas cloud database integration
-- Persistent data storage
+## Authentication
+- `POST /auth/register` → Register new user
+- `POST /auth/login` → Authenticate user and generate JWT
+
+## Notes
+- `GET /notes` → Fetch user notes
+- `POST /notes` → Create note
+- `PUT /notes/:id` → Update note
+- `DELETE /notes/:id` → Delete note
+
+---
+
+# 🗄️ Database Features
+
+- MongoDB Atlas cloud integration
+- Persistent note storage
 - Full CRUD operations
 - Mongoose schema modeling
-- Async database operations
-- REST API integration
+- Async database handling
+- Secure user authentication storage
 
 ---
 
-## 🔌 API Endpoints
+# 📚 Key Concepts Practiced
 
-- `GET /notes` → Fetch all notes
-- `POST /notes` → Create a new note
-- `PUT /notes/:id` → Update an existing note
-- `DELETE /notes/:id` → Delete a note
-
----
-
-## 📚 What I Learned
-
-- Building full-stack applications with React and Express
-- Integrating MongoDB with Mongoose
-- Managing frontend and backend state synchronization
-- Designing RESTful APIs
-- Structuring scalable backend architecture
-- Handling asynchronous operations and API errors
-- Debugging real-world integration issues
-- Managing dynamic UI state efficiently
+- Full-stack application development
+- REST API architecture
+- MongoDB integration with Mongoose
+- JWT authentication workflows
+- Password hashing and backend security
+- Protected API route handling
+- Frontend and backend state synchronization
+- Scalable backend folder structuring
+- Dynamic UI rendering in React
+- Error handling and async operations
 
 ---
 
-## 🚀 Future Improvements
+# 🚀 Future Improvements
 
-- JWT Authentication
-- User accounts and protected notes
 - Rich text editor
 - Drag-and-drop note organization
-- Dark mode
-- File/image attachments
-- Note sharing and collaboration
+- Dark mode support
+- File and image attachments
+- Collaborative note sharing
+- Folder and workspace support
+- Note archiving and trash system
+- Markdown support
+- Deployment with CI/CD
+
+---
+
+# 📌 Project Status
+
+🚧 Active Development  
+New features and backend improvements are continuously being added to improve scalability, security and user experience.
