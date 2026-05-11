@@ -42,7 +42,7 @@ function KnowledgeHub(){
         contents : input,
         tags : tags,
         pinned : false,
-        createdAt : Date.now(),
+        createdAt : new Date().toLocaleString(),
         updatedAt : ""
     };
     fetch("http://localhost:5000/notes",{
@@ -86,7 +86,7 @@ function updateNote(){
             heading : title,
             contents : input,
             tags : tags,
-            updatedAt : Date.now()
+            updatedAt : new Date().toLocaleString()
     }
     fetch(`http://localhost:5000/notes/${editId}`,{
     method : "PUT",
@@ -127,6 +127,8 @@ const sortedNotes = [...filteredNotes].sort((a, b) => {
       }
       return new Date(b.createdAt) - new Date(a.createdAt);
   });
+const pinnedNotes = sortedNotes.filter(note => note.pinned);
+const otherNotes = sortedNotes.filter(note => !note.pinned);
   function togglePinnedNotes(id) {
     const targetNote = notes.find(n => n._id === id);
       if (!targetNote) return;  
@@ -177,7 +179,15 @@ return(
     <NoteForm addNote = {addNote} input = {input} setInput = {setInput} title = {title} setTitle = {setTitle}
     editId = {editId} updateNote = {updateNote} cancelNote = {cancelNote} tagInput={tagInput} setTagInput = {setTagInput} tags={tags} setTags={setTags}
     selectedTag = {selectedTag} setSelectedTag={setSelectedTag} clearInput={clearInput} removeTag={removeTag}/>
-    <NoteList notes = {sortedNotes} deleteNote = {deleteNote} startEdit = {startEdit} setSelectedTag = {setSelectedTag}
+    {pinnedNotes.length > 0 &&(
+      <>
+       <h2 className="section-title">📌 Pinned Notes</h2>
+       <NoteList notes = {pinnedNotes} deleteNote = {deleteNote} startEdit = {startEdit} setSelectedTag = {setSelectedTag}
+    togglePinnedNotes = {togglePinnedNotes}/>
+      </>
+   )}
+   <h2 className="section-title">📝 Other Notes</h2>
+    <NoteList notes = {otherNotes} deleteNote = {deleteNote} startEdit = {startEdit} setSelectedTag = {setSelectedTag}
     togglePinnedNotes = {togglePinnedNotes}/>
     </>)}
     </div>

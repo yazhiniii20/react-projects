@@ -8,7 +8,7 @@ return(
     <div className = "input-form">
     <div className = "input-container">
     <input type="text" className="title-input" placeholder = "Heading..." value = {title} onChange={(e) => setTitle(e.target.value)}/>
-    <input type="text" className="note-input" value = {input} onChange={(e) => setInput(e.target.value)}/>
+    <textarea type="text" className="note-input" value = {input} onChange={(e) => setInput(e.target.value)}/>
     </div>
     <div className="tags">
     <input type="text" value = {tagInput} className = "tag-input" placeholder = "Add tag and press enter" onChange = {(e) => setTagInput(e.target.value)}
