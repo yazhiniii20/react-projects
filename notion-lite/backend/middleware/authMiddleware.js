@@ -1,3 +1,7 @@
+//1. Receive token from frontend
+//2. Verify token is valid
+//3. Identify user
+//4. Allow access to protected routes
 const jwt = require("jsonwebtoken");
 const authMiddleware = (req, res, next) => {
     try {

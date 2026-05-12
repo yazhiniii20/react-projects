@@ -5,8 +5,12 @@ const noteSchema = new mongoose.Schema({
   contents: String,
   tags: [String],
   pinned: Boolean,
-  createdAt: String,
-  updatedAt: String
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+}
+},{
+  timestamps : true
 });
 
 module.exports = mongoose.model("Note", noteSchema);
