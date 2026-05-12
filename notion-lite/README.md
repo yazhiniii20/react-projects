@@ -41,6 +41,9 @@ The project focuses on scalable frontend architecture, secure backend developmen
 - Protected API routes
 - Authorization middleware
 - Secure token verification flow
+- User-specific note ownership
+- Authorization-based CRUD access
+- Secure multi-user backend architecture
 
 ---
 
