@@ -2,14 +2,19 @@ import {useState,useEffect} from 'react';
 import NoteForm from './NoteForm.js';
 import NoteList from './NoteList.js';
 import './Notes.css'
-function KnowledgeHub(){
+function KnowledgeHub({setIsLoggedIn}){
  const [notes, setNotes] = useState([]);
  const [loading,setLoading] = useState(false);
  const [error , setError] = useState("");
+ const token = localStorage.getItem("token");
  useEffect(() => {
     setLoading(true);
     setError("");
-    fetch("http://localhost:5000/notes")
+    fetch("http://localhost:5000/notes", {
+      headers: {
+         Authorization: `Bearer ${token}`
+      }
+   })
       .then(res =>{
         if (!res.ok) throw new Error("Failed to fetch notes");
         return res.json();
@@ -24,7 +29,7 @@ function KnowledgeHub(){
       .finally(()=>{
         setLoading(false);
       })
-  }, []);
+  }, [token]);
  const [input,setInput] = useState("");
  const [title,setTitle] = useState("");
  const [editId,setEditId] = useState(null);
@@ -48,7 +53,8 @@ function KnowledgeHub(){
     fetch("http://localhost:5000/notes",{
         method : "POST",
         headers : {
-            "Content-Type" : "application/json"
+            "Content-Type" : "application/json",
+            Authorization: `Bearer ${token}`
         },
         body : JSON.stringify(newNote)
     })
@@ -65,9 +71,13 @@ function KnowledgeHub(){
     setInput("");
     setTags([]);
 }
+
 function deleteNote(id){
     fetch(`http://localhost:5000/notes/${id}`,{
-        method : "DELETE"
+        method : "DELETE",
+        headers : {
+        Authorization: `Bearer ${token}`
+        }
     }).then(res => {
         if(!res.ok) throw new Error("Failed to delete note");
         setNotes(prev => prev.filter(n => n._id !== id));
@@ -75,12 +85,14 @@ function deleteNote(id){
     .catch(err => setError(err.message))
     .finally(() => setLoading(false));
 }
+
 function startEdit(note){
     setEditId(note._id);
     setTitle(note.heading);
     setInput(note.contents);
     setTags(note.tags || []);
 }
+
 function updateNote(){
     const updated = {
             heading : title,
@@ -91,7 +103,8 @@ function updateNote(){
     fetch(`http://localhost:5000/notes/${editId}`,{
     method : "PUT",
         headers : {
-            "content-type" : "application/json"
+            "content-type" : "application/json",
+            Authorization: `Bearer ${token}`
         },
         body : JSON.stringify(updated)
     }).then(res => {
@@ -109,11 +122,13 @@ function updateNote(){
     setInput("");
     setTags([]);
 }
+
 function cancelNote(){
     setTitle("");
     setInput("");
     setEditId(null);
 }
+
 const filteredNotes = (notes || []).filter(n =>{
   const matchesSearch = n.heading.toLowerCase().includes(search.toLowerCase()) ||
                         n.contents.toLowerCase().includes(search.toLowerCase());
@@ -121,14 +136,17 @@ const filteredNotes = (notes || []).filter(n =>{
   const matchesTag = selectedTag === "" || n.tags.some(tag => tag === selectedTag);
   return matchesSearch && matchesTag;
 });
+
 const sortedNotes = [...filteredNotes].sort((a, b) => {
     if (b.pinned !== a.pinned) {
         return b.pinned - a.pinned;
       }
       return new Date(b.createdAt) - new Date(a.createdAt);
   });
+
 const pinnedNotes = sortedNotes.filter(note => note.pinned);
 const otherNotes = sortedNotes.filter(note => !note.pinned);
+
   function togglePinnedNotes(id) {
     const targetNote = notes.find(n => n._id === id);
       if (!targetNote) return;  
@@ -136,7 +154,8 @@ const otherNotes = sortedNotes.filter(note => !note.pinned);
     fetch(`http://localhost:5000/notes/${id}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
         pinned: updatedPinned
@@ -157,6 +176,7 @@ const otherNotes = sortedNotes.filter(note => !note.pinned);
       })
       .catch(err => setError(err.message));
   }
+
  function clearInput(){
     setTitle("");
     setInput("");
@@ -164,14 +184,22 @@ const otherNotes = sortedNotes.filter(note => !note.pinned);
     setTagInput("");
     setTags([]);
  }
+
  function removeTag(indexToRemove){
     setTags(tags.filter((_, index) => index !== indexToRemove));
 }
+
+function logout(){
+  localStorage.removeItem("token");
+  setIsLoggedIn(false);
+}
+
 return(
     <div>
     <div className = "header">
     <h1 className="app-name"> Personal Knowledge Hub </h1>
     <input type="text" value = {search} className = "search-input" placeholder = "Search Notes..." onChange = {(e) => setSearch(e.target.value)}/>
+    <button onClick={logout}>Logout</button>
     </div>
     {error && <p className="error">{error}</p>}
     {loading ?(<p className="status">Loading...</p>):(
