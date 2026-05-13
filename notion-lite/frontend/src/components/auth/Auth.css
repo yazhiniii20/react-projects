@@ -72,3 +72,19 @@
     color: red;
     text-align: center;
 }
+.auth-success{
+    color: green;
+    text-align: center;
+}
+
+.auth-switch{
+    text-align: center;
+    color: #555;
+}
+
+.auth-switch span{
+    color: #123b6d;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 5px;
+}

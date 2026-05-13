@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import './Auth.css';
 
-function Login({setIsLoggedIn}){
+function Login({setIsLoggedIn, setShowLogin}){
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [error , setError] = useState("");
@@ -57,7 +57,9 @@ function Login({setIsLoggedIn}){
                     <p className="auth-error">
                         {error}
                     </p>
-                )}    
+                )}
+                <p className="auth-switch"> Don't have an account?
+               <span onClick={() => setShowLogin(false)}>Register</span></p>    
             </div>    
         </div>
     );
