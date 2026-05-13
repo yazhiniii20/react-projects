@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useNavigate} from "react-router-dom"
 import "./Auth.css";
 
 function Register({ setShowLogin }) {
@@ -8,6 +9,7 @@ function Register({ setShowLogin }) {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
 
     async function handleRegister(){
 
@@ -75,7 +77,7 @@ function Register({ setShowLogin }) {
                 )}
                 <p className="auth-switch">
                     Already have an account?
-                    <span onClick={() => setShowLogin(true)}> Login </span>
+                    <span onClick={() => navigate("/login")}> Login </span>
                 </p>
             </div>
         </div>

@@ -1,4 +1,5 @@
 import {useState,useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import NoteForm from './NoteForm.js';
 import NoteList from './NoteList.js';
 import './Notes.css'
@@ -7,6 +8,7 @@ function KnowledgeHub({setIsLoggedIn}){
  const [loading,setLoading] = useState(false);
  const [error , setError] = useState("");
  const token = localStorage.getItem("token");
+ const navigate = useNavigate();
  useEffect(() => {
     setLoading(true);
     setError("");
@@ -191,7 +193,7 @@ const otherNotes = sortedNotes.filter(note => !note.pinned);
 
 function logout(){
   localStorage.removeItem("token");
-  setIsLoggedIn(false);
+  navigate("/login");
 }
 
 return(

@@ -1,10 +1,12 @@
 import {useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import './Auth.css';
 
-function Login({setIsLoggedIn, setShowLogin}){
+function Login(){
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [error , setError] = useState("");
+    const navigate = useNavigate();
 
     async function handleLogin(){
         try{
@@ -29,7 +31,7 @@ function Login({setIsLoggedIn, setShowLogin}){
          setError("");
          localStorage.setItem("token",data.token);
          console.log(data);
-         setIsLoggedIn(true);
+         navigate("/dashboard");
          console.log("logged in");
         }catch(error){
            setError("Login failed");
@@ -59,7 +61,7 @@ function Login({setIsLoggedIn, setShowLogin}){
                     </p>
                 )}
                 <p className="auth-switch"> Don't have an account?
-               <span onClick={() => setShowLogin(false)}>Register</span></p>    
+               <span onClick={() => navigate("/register")}>Register</span></p>    
             </div>    
         </div>
     );
