@@ -2,36 +2,32 @@ import {useState,useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import NoteForm from './NoteForm.js';
 import NoteList from './NoteList.js';
+import {getNotes,createNote,updateNote as updateNoteAPI,deleteNote as deleteNoteAPI} from "./services/api";
 import './Notes.css'
-function KnowledgeHub({setIsLoggedIn}){
+
+function KnowledgeHub(){
  const [notes, setNotes] = useState([]);
  const [loading,setLoading] = useState(false);
  const [error , setError] = useState("");
  const token = localStorage.getItem("token");
  const navigate = useNavigate();
  useEffect(() => {
-    setLoading(true);
-    setError("");
-    fetch("http://localhost:5000/notes", {
-      headers: {
-         Authorization: `Bearer ${token}`
+  async function fetchNotes(){
+      try{
+          setLoading(true);
+          setError("");
+          const data = await getNotes();
+          setNotes(Array.isArray(data) ? data : []);
+      } catch(error){
+          setError("Failed to fetch notes");
+          setNotes([]);
+      } finally{
+          setLoading(false);
       }
-   })
-      .then(res =>{
-        if (!res.ok) throw new Error("Failed to fetch notes");
-        return res.json();
-      })
-      .then(data => {
-        setNotes(Array.isArray(data) ? data : []);
-      })
-      .catch(err =>{
-        setError(err.message);
-        setNotes([]);
-      })
-      .finally(()=>{
-        setLoading(false);
-      })
-  }, [token]);
+  }
+  fetchNotes();
+}, []);
+
  const [input,setInput] = useState("");
  const [title,setTitle] = useState("");
  const [editId,setEditId] = useState(null);
@@ -40,52 +36,42 @@ function KnowledgeHub({setIsLoggedIn}){
  const [tags,setTags] = useState([]);
  const[selectedTag,setSelectedTag] = useState("");
  
- function addNote(){
-    if(input.trim() === ""){
-        return;
-    }
-    const newNote = {
-        heading : title,
-        contents : input,
-        tags : tags,
-        pinned : false,
-        createdAt : new Date().toLocaleString(),
-        updatedAt : ""
-    };
-    fetch("http://localhost:5000/notes",{
-        method : "POST",
-        headers : {
-            "Content-Type" : "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body : JSON.stringify(newNote)
-    })
-    .then(res => {
-        if(!res.ok){
-            throw new Error("Failed to add note");
-        }
-        return res.json();
-    })
-    .then(data => setNotes(prev => [...prev, data]))
-    .catch(err => setError(err.message))
-    .finally(()=> setLoading(false));
-    setTitle("");
-    setInput("");
-    setTags([]);
+ async function addNote(){
+  if(input.trim() === ""){
+      return;
+  }
+  const newNote = {
+      heading: title,
+      contents: input,
+      tags: tags,
+      pinned: false,
+      createdAt: new Date().toLocaleString(),
+      updatedAt: ""
+  };
+  try{
+      setLoading(true);
+      const savedNote = await createNote(newNote);
+      setNotes(prev => [...prev, savedNote]);
+      setTitle("");
+      setInput("");
+      setTags([]);
+  } catch(error){
+      setError("Failed to add note");
+  } finally{
+      setLoading(false);
+  }
 }
 
-function deleteNote(id){
-    fetch(`http://localhost:5000/notes/${id}`,{
-        method : "DELETE",
-        headers : {
-        Authorization: `Bearer ${token}`
-        }
-    }).then(res => {
-        if(!res.ok) throw new Error("Failed to delete note");
-        setNotes(prev => prev.filter(n => n._id !== id));
-    })
-    .catch(err => setError(err.message))
-    .finally(() => setLoading(false));
+async function deleteNote(id){
+  try{
+      setLoading(true);
+      await deleteNoteAPI(id);
+      setNotes(prev => prev.filter(n => n._id !== id));
+  } catch(error){
+      setError("Failed to delete note");
+  } finally{
+      setLoading(false);
+  }
 }
 
 function startEdit(note){
@@ -95,34 +81,26 @@ function startEdit(note){
     setTags(note.tags || []);
 }
 
-function updateNote(){
-    const updated = {
-            heading : title,
-            contents : input,
-            tags : tags,
-            updatedAt : new Date().toLocaleString()
-    }
-    fetch(`http://localhost:5000/notes/${editId}`,{
-    method : "PUT",
-        headers : {
-            "content-type" : "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body : JSON.stringify(updated)
-    }).then(res => {
-        if(!res.ok) throw new Error("Failed to update notes");
-        setNotes(prev =>
-            prev.map(n =>
-              n._id === editId ? { ...n, ...updated } : n
-            )
-          );
-    })
-    .catch(err => setError(err.message))
-    .finally(()=> setLoading(false));
-    setEditId(null);
-    setTitle("");
-    setInput("");
-    setTags([]);
+async function updateNote(){
+  const updated = {
+      heading: title,
+      contents: input,
+      tags: tags,
+      updatedAt: new Date().toLocaleString()
+  };
+  try{
+      setLoading(true);
+      const updatedNote =  await updateNoteAPI(editId, updated);
+      setNotes(prev => prev.map(n => n._id === editId ? updatedNote : n));
+      setEditId(null);
+      setTitle("");
+      setInput("");
+      setTags([]);
+  } catch(error){
+      setError("Failed to update note");
+  } finally{
+      setLoading(false);
+  }
 }
 
 function cancelNote(){

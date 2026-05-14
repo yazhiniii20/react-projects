@@ -1,8 +1,9 @@
 import { useState } from "react";
 import {useNavigate} from "react-router-dom"
+import { registerUser } from "../../services/api";
 import "./Auth.css";
 
-function Register({ setShowLogin }) {
+function Register() {
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -14,22 +15,8 @@ function Register({ setShowLogin }) {
     async function handleRegister(){
 
         try{
-            const response = await fetch(
-                "http://localhost:5000/auth/register",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        username,
-                        email,
-                        password
-                    })
-                }
-            );
-            const data = await response.json();
-            if(!response.ok){
+            const data = await registerUser({username,email,password});
+            if(data.message){
                 setError(data.message);
                 return;
             }

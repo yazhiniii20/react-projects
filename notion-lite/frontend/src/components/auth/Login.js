@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../services/api";
 import './Auth.css';
 
 function Login(){
@@ -10,27 +11,13 @@ function Login(){
 
     async function handleLogin(){
         try{
-         const response = await fetch(
-            "http://localhost:5000/auth/login",
-            {
-                method : "POST",
-                headers : {
-                    "Content-type" : "application/json"
-                },
-                body : JSON.stringify({
-                    email,
-                    password
-                })
-            }
-         );
-         const data = await response.json();
-         if(!response.ok){
+         const data = await loginUser({email,password});
+         if(data.message){
             setError(data.message);
             return;
          }
          setError("");
          localStorage.setItem("token",data.token);
-         console.log(data);
          navigate("/dashboard");
          console.log("logged in");
         }catch(error){
