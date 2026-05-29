@@ -3,14 +3,16 @@ import {useNavigate} from 'react-router-dom';
 import NoteForm from './NoteForm.js';
 import NoteList from './NoteList.js';
 import {getNotes,createNote,updateNote as updateNoteAPI,deleteNote as deleteNoteAPI} from "./services/api";
+import {useAuth} from "./context/AuthContext";
 import './Notes.css'
 
 function KnowledgeHub(){
  const [notes, setNotes] = useState([]);
  const [loading,setLoading] = useState(false);
  const [error , setError] = useState("");
- const token = localStorage.getItem("token");
+ const { token,logout } = useAuth();
  const navigate = useNavigate();
+
  useEffect(() => {
   async function fetchNotes(){
       try{
@@ -169,8 +171,8 @@ const otherNotes = sortedNotes.filter(note => !note.pinned);
     setTags(tags.filter((_, index) => index !== indexToRemove));
 }
 
-function logout(){
-  localStorage.removeItem("token");
+function handlelogout(){
+  logout();
   navigate("/login");
 }
 
@@ -179,7 +181,7 @@ return(
     <div className = "header">
     <h1 className="app-name"> Personal Knowledge Hub </h1>
     <input type="text" value = {search} className = "search-input" placeholder = "Search Notes..." onChange = {(e) => setSearch(e.target.value)}/>
-    <button onClick={logout}>Logout</button>
+    <button onClick={handlelogout}>Logout</button>
     </div>
     {error && <p className="error">{error}</p>}
     {loading ?(<p className="status">Loading...</p>):(
