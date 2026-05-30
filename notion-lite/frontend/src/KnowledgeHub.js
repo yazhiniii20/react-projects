@@ -2,42 +2,27 @@ import {useState,useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import NoteForm from './NoteForm.js';
 import NoteList from './NoteList.js';
-import {getNotes,createNote,updateNote as updateNoteAPI,deleteNote as deleteNoteAPI} from "./services/api";
 import {useAuth} from "./context/AuthContext";
+import { useNotes } from "./hooks/useNotes";
 import './Notes.css'
 
 function KnowledgeHub(){
- const [notes, setNotes] = useState([]);
- const [loading,setLoading] = useState(false);
- const [error , setError] = useState("");
- const { token,logout } = useAuth();
+ const {notes,loading,error,fetchNotes,addNote:addNoteAPI,deleteNote: deleteNoteHook,updateNote: updateNoteHook,togglePin} = useNotes();
+ const {logout } = useAuth();
  const navigate = useNavigate();
 
  useEffect(() => {
-  async function fetchNotes(){
-      try{
-          setLoading(true);
-          setError("");
-          const data = await getNotes();
-          setNotes(Array.isArray(data) ? data : []);
-      } catch(error){
-          setError("Failed to fetch notes");
-          setNotes([]);
-      } finally{
-          setLoading(false);
-      }
-  }
   fetchNotes();
-}, []);
+},[]);
 
  const [input,setInput] = useState("");
  const [title,setTitle] = useState("");
+ const [tags,setTags] = useState([]);
  const [editId,setEditId] = useState(null);
  const [search,setSearch] = useState("");
  const [tagInput,setTagInput] = useState("");
- const [tags,setTags] = useState([]);
  const[selectedTag,setSelectedTag] = useState("");
- 
+
  async function addNote(){
   if(input.trim() === ""){
       return;
@@ -50,30 +35,18 @@ function KnowledgeHub(){
       createdAt: new Date().toLocaleString(),
       updatedAt: ""
   };
-  try{
-      setLoading(true);
-      const savedNote = await createNote(newNote);
-      setNotes(prev => [...prev, savedNote]);
+  const success =  await addNoteAPI(newNote);
+
+  if(success){
       setTitle("");
       setInput("");
       setTags([]);
-  } catch(error){
-      setError("Failed to add note");
-  } finally{
-      setLoading(false);
   }
 }
 
 async function deleteNote(id){
-  try{
-      setLoading(true);
-      await deleteNoteAPI(id);
-      setNotes(prev => prev.filter(n => n._id !== id));
-  } catch(error){
-      setError("Failed to delete note");
-  } finally{
-      setLoading(false);
-  }
+
+  await deleteNoteHook(id);
 }
 
 function startEdit(note){
@@ -90,18 +63,12 @@ async function updateNote(){
       tags: tags,
       updatedAt: new Date().toLocaleString()
   };
-  try{
-      setLoading(true);
-      const updatedNote =  await updateNoteAPI(editId, updated);
-      setNotes(prev => prev.map(n => n._id === editId ? updatedNote : n));
+  const success =  await updateNoteHook(editId, updated);
+  if(success){
       setEditId(null);
       setTitle("");
       setInput("");
       setTags([]);
-  } catch(error){
-      setError("Failed to update note");
-  } finally{
-      setLoading(false);
   }
 }
 
@@ -129,35 +96,9 @@ const sortedNotes = [...filteredNotes].sort((a, b) => {
 const pinnedNotes = sortedNotes.filter(note => note.pinned);
 const otherNotes = sortedNotes.filter(note => !note.pinned);
 
-  function togglePinnedNotes(id) {
-    const targetNote = notes.find(n => n._id === id);
-      if (!targetNote) return;  
-    const updatedPinned = !targetNote.pinned;  
-    fetch(`http://localhost:5000/notes/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        pinned: updatedPinned
-      })
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("Failed to update pin");
-        }
-  
-        setNotes(prev =>
-          prev.map(n =>
-            n._id === id
-              ? { ...n, pinned: updatedPinned }
-              : n
-          )
-        );
-      })
-      .catch(err => setError(err.message));
-  }
+async function togglePinnedNotes(id){
+  await togglePin(id);
+}
 
  function clearInput(){
     setTitle("");
