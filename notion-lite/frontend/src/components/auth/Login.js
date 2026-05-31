@@ -19,7 +19,7 @@ function Login(){
             return;
          }
          setError("");
-         login(data.token);
+         login(data.token,data.user);
          navigate("/dashboard");
          console.log("logged in");
         }catch(error){

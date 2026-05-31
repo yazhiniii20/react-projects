@@ -8,7 +8,7 @@ import './Notes.css'
 
 function KnowledgeHub(){
  const {notes,loading,error,fetchNotes,addNote:addNoteAPI,deleteNote: deleteNoteHook,updateNote: updateNoteHook,togglePin} = useNotes();
- const {logout } = useAuth();
+ const {user,logout } = useAuth();
  const navigate = useNavigate();
 
  useEffect(() => {
@@ -127,6 +127,7 @@ return(
     {error && <p className="error">{error}</p>}
     {loading ?(<p className="status">Loading...</p>):(
     <>
+    <h3 className="user-name-heading"> Welcome, {user?.username}</h3>
     <NoteForm addNote = {addNote} input = {input} setInput = {setInput} title = {title} setTitle = {setTitle}
     editId = {editId} updateNote = {updateNote} cancelNote = {cancelNote} tagInput={tagInput} setTagInput = {setTagInput} tags={tags} setTags={setTags}
     selectedTag = {selectedTag} setSelectedTag={setSelectedTag} clearInput={clearInput} removeTag={removeTag}/>
