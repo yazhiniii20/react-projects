@@ -2,9 +2,49 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
+    padding:20px 40px;
     background:#0D3B66;
     color:white;
-    padding:7px 40px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.app-brand h2{
+    margin:0;
+}
+
+.user-section{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    position:relative;
+}
+
+.user-menu-btn{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.user-dropdown{
+    position:absolute;
+    top:55px;
+    right:0;
+    width:220px;
+    background:white;
+    color:black;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:  0 5px 15px rgba(0,0,0,0.2);
+}
+
+.user-dropdown button{
+    width:100%;
+    margin-top:10px;
 }
 
 .user-info h2{

@@ -118,7 +118,6 @@ async function togglePinnedNotes(id){
 return(
     <div>
     <div className = "header">
-    <h1 className="app-name"> Personal Knowledge Hub </h1>
     <input type="text" value = {search} className = "search-input" placeholder = "Search Notes..." onChange = {(e) => setSearch(e.target.value)}/>
     {/* <button onClick={handlelogout}>Logout</button> */}
     </div>

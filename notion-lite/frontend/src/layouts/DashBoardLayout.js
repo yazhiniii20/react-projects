@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import {useState} from "react";
 import "./DashBoardLayout.css";
 
 function DashboardLayout({ children }) {
 
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [showMenu, setShowMenu] = useState(false);
 
     function handleLogout() {
         logout();
@@ -13,19 +15,27 @@ function DashboardLayout({ children }) {
     }
 
     return (
-        <div>
+        <div className="dashboard-layout">
             <header className="dashboard-header">
-                <div className = "user-info">
-                    <h2>
-                        Welcome, {user?.username}
-                    </h2>
-                    <p>
-                        {user?.email}
-                    </p>
+                <div className="app-brand">
+                    <h2>Personal Knowledge Hub</h2>
                 </div>
-                <button className = "logout-btn" onClick={handleLogout}>Logout </button>
-            </header>            
-            <main> {children} </main>
+                <div className="user-section">
+                    <span className="welcome-user">
+                        Welcome, {user?.username}
+                    </span>
+                    <button className="user-menu-btn" onClick={() => setShowMenu(!showMenu)}>👤 </button>
+                    {showMenu && (
+                        <div className="user-dropdown">
+                            <p>
+                                {user?.email}
+                            </p>
+                            <button className = "logout-btn" onClick={handleLogout}> Logout </button>
+                        </div>
+                    )}
+                </div>
+            </header>
+            <main className="dashboard-content"> {children} </main>
         </div>
     );
 }
