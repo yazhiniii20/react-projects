@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { getNotes, createNote, updateNote as updateNoteAPI, deleteNote as deleteNoteAPI} from "../services/api";
 
 export function useNotes() {
@@ -26,9 +27,11 @@ export function useNotes() {
             setError("");
             const savedNote = await createNote(newNote);
             setNotes(prev => [...prev, savedNote]);
+            toast.success("Note added");
             return true;
         } catch(error){
             setError("Failed to add note");
+            toast.error("Failed to add note");
             return false;
         } finally{
             setLoading(false);
@@ -42,10 +45,12 @@ export function useNotes() {
             await deleteNoteAPI(id);    
             setNotes(prev =>
                 prev.filter(n => n._id !== id)
-            );    
+            );
+            toast.success("Note deleted");   
             return true;    
         } catch(error){    
-            setError("Failed to delete note");    
+            setError("Failed to delete note"); 
+            toast.error("Failed to delete note");   
             return false;    
         } finally{    
             setLoading(false);
@@ -57,10 +62,12 @@ export function useNotes() {
             setLoading(true);    
             setError("");    
             const updatedNote =  await updateNoteAPI(id, updatedData);    
-            setNotes(prev =>  prev.map(n => n._id === id ? updatedNote : n));    
+            setNotes(prev =>  prev.map(n => n._id === id ? updatedNote : n));
+            toast.success("Note updated");    
             return true;    
         } catch(error){    
             setError("Failed to update note");    
+            toast.error("Failed to update note");
             return false;    
         } finally{    
             setLoading(false);

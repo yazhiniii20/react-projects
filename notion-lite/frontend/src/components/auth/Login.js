@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/api";
 import './Auth.css';
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+
 
 function Login(){
     const [email,setEmail] = useState("");
@@ -13,17 +15,20 @@ function Login(){
 
     async function handleLogin(){
         try{
-         const data = await loginUser({email,password});
+         const data = await loginUser({email,password});       
          if(data.message){
             setError(data.message);
+            toast.error(data.message);
             return;
          }
          setError("");
          login(data.token,data.user);
+         toast.success("Login successful");
          navigate("/dashboard");
          console.log("logged in");
         }catch(error){
            setError("Login failed");
+           toast.error("Login failed");
         }
     }
     return(

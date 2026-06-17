@@ -4,6 +4,9 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./routes/ProtectedRoutes";
+import ProfilePage from "./pages/ProfilePage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   
@@ -18,7 +21,13 @@ function App() {
                     </ProtectedRoute>
                 }/>
                 <Route path="*" element={<Navigate to="/login" />}/>
+                <Route path="/profile"  element={
+                        <ProtectedRoute>
+                           <ProfilePage />
+                        </ProtectedRoute>
+                 }/>
             </Routes>
+            <ToastContainer/>
         </BrowserRouter>
     );
 }

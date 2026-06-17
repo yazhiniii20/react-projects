@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {useNavigate} from "react-router-dom"
 import { registerUser } from "../../services/api";
+import { toast } from "react-toastify";
 import "./Auth.css";
 
 function Register() {
@@ -9,7 +10,6 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
     async function handleRegister(){
@@ -18,15 +18,18 @@ function Register() {
             const data = await registerUser({username,email,password});
             if(data.message){
                 setError(data.message);
+                toast.error(data.message);
                 return;
             }
-            setSuccess("Registration successful");
+            //setSuccess("Registration successful");
             setError("");
             setUsername("");
             setEmail("");
-            setPassword("");
+            setPassword("");            
+            toast.success("Registration successful");
         } catch(error){
             setError("Registration failed");
+            toast.error("Registration failed");
         }
     }
     return(
@@ -53,15 +56,13 @@ function Register() {
                 <button className="auth-btn" onClick={handleRegister}>Register </button>
 
                 {error && (
-                    <p className="auth-error">
-                        {error}
-                    </p>
+                    <p className="auth-error">  {error} </p>
                 )}
-                {success && (
+                {/* {success && (
                     <p className="auth-success">
                         {success}
                     </p>
-                )}
+                )} */}
                 <p className="auth-switch">
                     Already have an account?
                     <span onClick={() => navigate("/login")}> Login </span>

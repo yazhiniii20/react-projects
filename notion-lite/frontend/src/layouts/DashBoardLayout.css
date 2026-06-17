@@ -62,3 +62,21 @@
     border-radius:8px;
     cursor:pointer;
 }
+
+.profile-section{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.profile-avatar{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#123f72;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
