@@ -1,8 +1,11 @@
 import KnowledgeHub from "../KnowledgeHub";
+import DashBoardLayout from "../layouts/DashBoardLayout";
 
-function DashboardPage({ setIsLoggedIn }){
+function DashboardPage({ setIsLoggedIn}){
     return(
-        <KnowledgeHub setIsLoggedIn={setIsLoggedIn} />
+     <DashBoardLayout>
+        <KnowledgeHub setIsLoggedIn={setIsLoggedIn}/>
+    </DashBoardLayout>
     );
 }
 

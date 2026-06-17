@@ -1,25 +1,23 @@
 import {useState,useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
 import NoteForm from './NoteForm.js';
 import NoteList from './NoteList.js';
-import {useAuth} from "./context/AuthContext";
 import { useNotes } from "./hooks/useNotes";
 import './Notes.css'
 
 function KnowledgeHub(){
  const {notes,loading,error,fetchNotes,addNote:addNoteAPI,deleteNote: deleteNoteHook,updateNote: updateNoteHook,togglePin} = useNotes();
- const {user,logout } = useAuth();
- const navigate = useNavigate();
+//  const {user} = useAuth();
+//  const navigate = useNavigate();
 
  useEffect(() => {
   fetchNotes();
 },[]);
 
  const [input,setInput] = useState("");
- const [title,setTitle] = useState("");
+ const [title,setTitle] = useState(""); 
+ const [search,setSearch] = useState("");
  const [tags,setTags] = useState([]);
  const [editId,setEditId] = useState(null);
- const [search,setSearch] = useState("");
  const [tagInput,setTagInput] = useState("");
  const[selectedTag,setSelectedTag] = useState("");
 
@@ -112,22 +110,22 @@ async function togglePinnedNotes(id){
     setTags(tags.filter((_, index) => index !== indexToRemove));
 }
 
-function handlelogout(){
-  logout();
-  navigate("/login");
-}
+// function handlelogout(){
+//   logout();
+//   navigate("/login");
+// }
 
 return(
     <div>
     <div className = "header">
     <h1 className="app-name"> Personal Knowledge Hub </h1>
     <input type="text" value = {search} className = "search-input" placeholder = "Search Notes..." onChange = {(e) => setSearch(e.target.value)}/>
-    <button onClick={handlelogout}>Logout</button>
+    {/* <button onClick={handlelogout}>Logout</button> */}
     </div>
     {error && <p className="error">{error}</p>}
     {loading ?(<p className="status">Loading...</p>):(
     <>
-    <h3 className="user-name-heading"> Welcome, {user?.username}</h3>
+    {/* <h3 className="user-name-heading"> Welcome, {user?.username}</h3> */}
     <NoteForm addNote = {addNote} input = {input} setInput = {setInput} title = {title} setTitle = {setTitle}
     editId = {editId} updateNote = {updateNote} cancelNote = {cancelNote} tagInput={tagInput} setTagInput = {setTagInput} tags={tags} setTags={setTags}
     selectedTag = {selectedTag} setSelectedTag={setSelectedTag} clearInput={clearInput} removeTag={removeTag}/>
