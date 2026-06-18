@@ -29,9 +29,7 @@ function KnowledgeHub(){
       heading: title,
       contents: input,
       tags: tags,
-      pinned: false,
-      createdAt: new Date().toLocaleString(),
-      updatedAt: ""
+      pinned: false
   };
   const success =  await addNoteAPI(newNote);
 

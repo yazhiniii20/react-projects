@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import { getNotes, createNote, updateNote as updateNoteAPI, deleteNote as deleteNoteAPI} from "../services/api";
 
@@ -7,19 +7,21 @@ export function useNotes() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
   
-    async function fetchNotes(){
+    const fetchNotes = useCallback(async () => {
         try{
             setLoading(true);
-            setError("");
-            const data = await getNotes();
+            setError("");    
+            const data = await getNotes();    
             setNotes(Array.isArray(data) ? data : []);
-        } catch(error){
+        }
+        catch(error){
             setError("Failed to fetch notes");
             setNotes([]);
-        } finally{
+        }
+        finally{
             setLoading(false);
         }
-    }
+    }, []);
 
     async function addNote(newNote){       
         try{

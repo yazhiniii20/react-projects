@@ -1,8 +1,8 @@
-const BASE_URL = process.env.REACT_APP_API_URL;
+const BASE_URL = process.env.REACT_APP_API_URL?.replace(/\/$/, "");
 function getToken(){
     return localStorage.getItem("token");
 }
-
+console.log("BASE_URL =", BASE_URL);
 export async function loginUser(userData){
     const response = await fetch(
         `${BASE_URL}/auth/login`,

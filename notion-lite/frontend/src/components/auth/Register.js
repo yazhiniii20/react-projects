@@ -27,6 +27,7 @@ function Register() {
             setEmail("");
             setPassword("");            
             toast.success("Registration successful");
+            navigate("/login");
         } catch(error){
             setError("Registration failed");
             toast.error("Registration failed");
