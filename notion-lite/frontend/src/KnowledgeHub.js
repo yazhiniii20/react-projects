@@ -11,7 +11,7 @@ function KnowledgeHub(){
 
  useEffect(() => {
   fetchNotes();
-},[]);
+},[fetchNotes]);
 
  const [input,setInput] = useState("");
  const [title,setTitle] = useState(""); 
