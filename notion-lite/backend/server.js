@@ -10,7 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 app.use(cors());//enables cors globally
 app.use(express.json());//this converts incoming json to javascript object
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.get('/',(req,res)=>{
     res.send("Backend is running ✅")
 })
