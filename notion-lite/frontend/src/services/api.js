@@ -1,4 +1,4 @@
-const BASE_URL = "process.env.REACT_APP_API_URL";
+const BASE_URL = process.env.REACT_APP_API_URL;
 function getToken(){
     return localStorage.getItem("token");
 }
