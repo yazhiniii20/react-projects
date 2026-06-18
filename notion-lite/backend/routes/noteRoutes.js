@@ -7,10 +7,13 @@ const {
     getNotes,
     addNote,
     deleteNote,
-    updateNote
+    updateNote,
+    getStats
 } = require("../controllers/noteController");
 
 router.get("/", authMiddleware,getNotes);
+
+router.get("/stats",authMiddleware,getStats);
 
 router.post("/", authMiddleware,addNote);
 

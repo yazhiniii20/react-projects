@@ -19,7 +19,7 @@ return(
               </div>
             <h3> {note.heading} </h3>
             <p>  {note.contents} </p>
-            <p>  Last Changes on : {note.createdAt} </p>
+            <p>  Last Changes on : {new Date(note.createdAt).toLocaleDateString()} </p>
             </div>
             <div className="button-grp">
             <button className = "delete-btn" onClick={() => deleteNote(note._id)}>Delete</button>

@@ -41,9 +41,31 @@ const updateNote = async (req, res) => {
     res.json(updatedNote);
 };
 
+//STATS
+const getStats = async (req, res) => {
+
+    try {
+        const userId = req.user.id;
+        const notes = await Note.find({ user: userId });
+        const totalNotes = notes.length;
+        const pinnedNotes = notes.filter(n => n.pinned).length;
+        const totalTags =  notes.reduce((count, note) => count + (note.tags?.length || 0),0);
+        res.json({
+            totalNotes,
+            pinnedNotes,
+            totalTags
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to fetch stats"
+        });
+    }
+};
+
 module.exports = {
     getNotes,
     addNote,
     deleteNote,
-    updateNote
+    updateNote,
+    getStats
 };

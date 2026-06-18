@@ -22,6 +22,7 @@ function Login(){
             return;
          }
          setError("");
+         console.log(data.user);
          login(data.token,data.user);
          toast.success("Login successful");
          navigate("/dashboard");

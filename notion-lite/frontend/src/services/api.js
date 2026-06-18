@@ -79,3 +79,11 @@ export async function deleteNote(id){
     );
     return response.json();
 }
+
+export async function getStats() {
+    const response =  await fetch(`${BASE_URL}/notes/stats`,{
+                headers: authHeaders()
+            }
+        );
+    return response.json();
+}
