@@ -2,7 +2,7 @@ import './Notes.css';
 function NoteList({notes,deleteNote,startEdit,setSelectedTag,togglePinnedNotes}){
 return(
 <div className = "notes-grid">
-    {notes.length === 0 ? (<div><p>No notes found. Start by adding one!</p></div>):(
+    {notes.length === 0 ? (<div className="no-notes"><p>No notes found. Start by adding one!</p></div>):(
     <>
     {notes.map(note => 
         <div className={`notes-list ${note.pinned ? "pinned" : ""}`} key = {note.id}>

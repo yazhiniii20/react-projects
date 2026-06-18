@@ -184,3 +184,7 @@
   margin-left: 20px;
   color: #123b6d;
 }
+.no-notes{
+  display: grid;
+  place-items: center;     /* Centers vertically */
+}

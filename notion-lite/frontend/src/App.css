@@ -39,3 +39,13 @@
 body{
   background-color : #b4d6e3;
 }
+.app.light{
+  background:#b8d3df;
+  color:black;
+}
+
+.app.dark{
+  background:#1e1e1e;
+  color:white;
+  min-height:100vh;
+}
